@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Archives | Asad's Lair</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="projects.css">
+</head>
+<body class="text-white min-h-screen">
+
+    <div class="fixed inset-0 pointer-events-none z-0">
+        <div class="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-purple-900/20 via-black to-black"></div>
+    </div>
+
+    <nav class="relative z-10 flex justify-between items-center p-6 border-b border-purple-900/30 backdrop-blur-md">
+        <div class="flex items-center gap-3">
+            <i class="fa-solid fa-laptop-code text-3xl text-purple-500"></i>
+            <h1 class="text-2xl font-black tracking-widest uppercase">Project Archive</h1>
+        </div>
+        
+        <a href="dashboard.html" class="flex items-center gap-2 px-4 py-2 rounded-full border border-purple-900/50 bg-purple-900/10 hover:bg-purple-900/30 hover:border-purple-500 transition-all duration-300 group">
+            <i class="fa-solid fa-arrow-left text-xs text-purple-400 group-hover:-translate-x-1 transition-transform"></i>
+            <span class="text-xs font-bold uppercase tracking-wider text-purple-400">Back to Lair</span>
+        </a>
+    </nav>
+
+    <main class="relative z-10 container mx-auto px-4 py-12">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-500 mb-4">SELECT A PROJECT</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+            
+            <div onclick="openProject('projects/login.html')" class="group relative h-96 bg-gray-900/20 rounded-xl overflow-hidden cursor-pointer transition-all duration-300">
+                <div class="absolute inset-0 z-0 border-mask rounded-xl pointer-events-none">
+                    <div class="absolute -inset-[100%] animate-spin-cw bg-[conic-gradient(transparent_80%,_#3b82f6_100%)]"></div>
+                    <div class="absolute -inset-[100%] animate-spin-ccw bg-[conic-gradient(transparent_80%,_#3b82f6_100%)]"></div>
+                </div>
+                
+                <div class="absolute inset-0 border border-blue-900/40 rounded-xl z-10 group-hover:border-blue-500/50 transition-colors"></div>
+                <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-90 z-10"></div>
+                
+                <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 group-hover:scale-110 transition-transform duration-500">
+                    <i class="fa-solid fa-lock text-9xl icon-neon icon-neon-blue relative z-10"></i>
+                </div>
+
+                <div class="absolute bottom-0 left-0 w-full p-6 border-t border-blue-900/30 bg-black/50 backdrop-blur-sm group-hover:bg-blue-900/20 transition-colors z-20">
+                    <h3 class="text-xl font-bold text-white mb-1 group-hover:text-blue-400">Neon Login System</h3>
+                    <p class="text-xs text-gray-400 uppercase tracking-wider">Full Stack Auth & Glassmorphism</p>
+                </div>
+            </div>
+
+            <div onclick="openProject('projects/calc.html')" class="group relative h-96 bg-gray-900/20 rounded-xl overflow-hidden cursor-pointer transition-all duration-300">
+                <div class="absolute inset-0 z-0 border-mask rounded-xl pointer-events-none">
+                    <div class="absolute -inset-[100%] animate-spin-cw bg-[conic-gradient(transparent_80%,_#ec4899_100%)]"></div>
+                    <div class="absolute -inset-[100%] animate-spin-ccw bg-[conic-gradient(transparent_80%,_#ec4899_100%)]"></div>
+                </div>
+                
+                <div class="absolute inset-0 border border-pink-900/40 rounded-xl z-10 group-hover:border-pink-500/50 transition-colors"></div>
+                <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-90 z-10"></div>
+                
+                <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 group-hover:scale-110 transition-transform duration-500">
+                    <i class="fa-solid fa-calculator text-9xl icon-neon text-transparent" style="-webkit-text-stroke: 2px #ec4899; filter: drop-shadow(0 0 5px #ec4899);"></i>
+                </div>
+
+                <div class="absolute bottom-0 left-0 w-full p-6 border-t border-pink-900/30 bg-black/50 backdrop-blur-sm group-hover:bg-pink-900/20 transition-colors z-20">
+                    <h3 class="text-xl font-bold text-white mb-1 group-hover:text-pink-400">Neon Calculator</h3>
+                    <p class="text-xs text-gray-400 uppercase tracking-wider">Math & Cyberpunk</p>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script src="projects.js"></script>
+</body>
+</html>

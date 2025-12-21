@@ -1,0 +1,57 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+
+body { 
+    font-family: 'Montserrat', sans-serif; 
+    background-color: #000; 
+}
+
+.mono { 
+    font-family: 'JetBrains Mono', monospace; 
+}
+
+/* --- ANIMATIONS --- */
+
+/* 1. Slow Spin for Profile (Existing) */
+@keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+.animate-trail {
+    animation: spin-slow 4s linear infinite;
+}
+
+/* 2. Dual Spin for Objective Card (UPDATED SPEED) */
+/* Changed from 2s to 5s for a smoother rotation */
+@keyframes spin-cw {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+@keyframes spin-ccw {
+    from { transform: scaleX(-1) rotate(0deg); }
+    to { transform: scaleX(-1) rotate(360deg); }
+}
+
+.animate-spin-cw { 
+    animation: spin-cw 5s linear infinite; 
+}
+.animate-spin-ccw { 
+    animation: spin-ccw 5s linear infinite; 
+}
+
+/* --- MASKS --- */
+.border-mask {
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    padding: 1.5px; 
+}
+
+.circle-mask {
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    padding: 3px; 
+}

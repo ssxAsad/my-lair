@@ -1,0 +1,74 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap'); 
+
+body { 
+    font-family: 'Montserrat', sans-serif; 
+    background-color: #000; 
+}
+
+/* --- ANIMATIONS: Continuous Spin (No Reset) --- */
+@keyframes spin-cw {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+@keyframes spin-ccw {
+    from { transform: scaleX(-1) rotate(0deg); }
+    to { transform: scaleX(-1) rotate(360deg); }
+}
+
+.animate-spin-cw { animation: spin-cw 2s linear infinite; }
+.animate-spin-ccw { animation: spin-ccw 2s linear infinite; }
+
+/* --- MASKS --- */
+.border-mask {
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    padding: 3px; 
+}
+
+/* --- ICON STYLES --- */
+.icon-neon {
+    color: transparent; /* Interior is empty by default */
+    transition: all 0.3s ease;
+}
+
+/* 1. CYAN (Portfolio) */
+.icon-neon-cyan {
+    -webkit-text-stroke: 2px #22d3ee;
+    filter: drop-shadow(0 0 5px #22d3ee); 
+}
+.group:hover .icon-neon-cyan {
+    color: #22d3ee; 
+    filter: none;   
+}
+
+/* 2. PURPLE (Projects) */
+.icon-neon-purple {
+    -webkit-text-stroke: 2px #a855f7;
+    filter: drop-shadow(0 0 5px #a855f7);
+}
+.group:hover .icon-neon-purple {
+    color: #a855f7;
+    filter: none;
+}
+
+/* 3. EMERALD (ARIA) */
+.icon-neon-emerald {
+    -webkit-text-stroke: 2px #34d399;
+    filter: drop-shadow(0 0 5px #34d399);
+}
+.group:hover .icon-neon-emerald {
+    color: #34d399;
+    filter: none;
+}
+
+/* 4. AMBER (Game) */
+.icon-neon-amber {
+    -webkit-text-stroke: 2px #fbbf24;
+    filter: drop-shadow(0 0 5px #fbbf24);
+}
+.group:hover .icon-neon-amber {
+    color: #fbbf24;
+    filter: none;
+}
