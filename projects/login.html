@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome & Register</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-black flex items-center justify-center min-h-screen p-4 antialiased selection:bg-cyan-900 selection:text-white relative">
+
+    <a href="../projects.html" class="absolute top-6 left-6 z-50 flex items-center gap-2 px-4 py-2 rounded-full border border-cyan-900/50 bg-black/50 backdrop-blur-md hover:bg-cyan-900/30 hover:border-cyan-500 transition-all duration-300 group">
+        <i class="fa-solid fa-arrow-left text-xs text-cyan-400 group-hover:-translate-x-1 transition-transform"></i>
+        <span class="text-xs font-bold uppercase tracking-wider text-cyan-400">Back to Archive</span>
+    </a>
+
+    <div id="mainCard" class="relative w-full max-w-[950px] h-[550px] bg-black rounded-xl border border-cyan-900/40 shadow-[0_0_80px_-20px_rgba(8,145,178,0.3)] overflow-hidden group">
+
+        <div class="diagonal-bg"></div>
+
+        <div class="register-layer absolute inset-0 z-20">
+            
+            <div class="absolute top-0 left-0 h-full w-[40%] flex flex-col items-center justify-center">
+                <h1 class="text-4xl font-black tracking-widest text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)] uppercase font-sans text-center opacity-90">
+                    Welcome to<br>the Club!
+                </h1>
+            </div>
+
+            <div class="absolute top-0 right-0 h-full w-[45%] flex flex-col justify-center items-center">
+                <div class="w-[320px]">
+                    <h2 class="text-3xl font-bold mb-10 text-white tracking-wide font-sans text-center opacity-90">Register</h2>
+                    <form class="space-y-6">
+                        <div class="relative group">
+                            <input type="text" placeholder=" " class="peer w-full bg-transparent border-b border-gray-500 py-3 text-white text-sm outline-none focus:border-cyan-400 transition-all font-medium tracking-wide">
+                            <label class="absolute left-0 top-3 text-gray-400 text-xs transition-all peer-focus:-top-4 peer-focus:text-cyan-400 peer-[:not(:placeholder-shown)]:-top-4 cursor-text font-bold uppercase tracking-widest">Username</label>
+                            <i class="fa-solid fa-user absolute right-0 top-3 text-gray-400 peer-focus:text-cyan-400 transition-colors text-xs"></i>
+                        </div>
+                        <div class="relative group">
+                            <input type="email" placeholder=" " class="peer w-full bg-transparent border-b border-gray-500 py-3 text-white text-sm outline-none focus:border-cyan-400 transition-all font-medium tracking-wide">
+                            <label class="absolute left-0 top-3 text-gray-400 text-xs transition-all peer-focus:-top-4 peer-focus:text-cyan-400 peer-[:not(:placeholder-shown)]:-top-4 cursor-text font-bold uppercase tracking-widest">Email</label>
+                            <i class="fa-solid fa-envelope absolute right-0 top-3 text-gray-400 peer-focus:text-cyan-400 transition-colors text-xs"></i>
+                        </div>
+                        
+                        <div class="relative group">
+                            <input type="password" id="regPass" placeholder=" " class="peer w-full bg-transparent border-b border-gray-500 py-3 text-white text-sm outline-none focus:border-cyan-400 transition-all font-medium tracking-wide pr-8">
+                            <label class="absolute left-0 top-3 text-gray-400 text-xs transition-all peer-focus:-top-4 peer-focus:text-cyan-400 peer-[:not(:placeholder-shown)]:-top-4 cursor-text font-bold uppercase tracking-widest">Password</label>
+                            <i id="regIcon" onclick="togglePassword('regPass', 'regIcon')" class="fa-solid fa-eye absolute right-0 top-3 text-gray-400 cursor-pointer hover:text-cyan-400 transition-colors text-xs z-10"></i>
+                        </div>
+
+                        <button type="button" class="group w-full mt-8 bg-gradient-to-b from-cyan-900 to-black text-white py-3 rounded-full font-bold text-sm tracking-wider uppercase shadow-[0_4px_10px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.1)] hover:brightness-125 hover:shadow-[0_0_20px_rgba(8,145,178,0.3)] transition-all duration-300">
+                            Register
+                        </button>
+                    </form>
+                    <p class="mt-8 text-center text-xs text-gray-400 font-medium">
+                        Already have an account? 
+                        <button onclick="toggleAuth()" class="text-cyan-600 hover:text-cyan-400 ml-1 font-bold transition-colors hover:underline cursor-pointer">Sign In</button>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="signin-layer absolute inset-0 pointer-events-none z-20">
+            <div class="absolute top-0 left-0 h-full w-[45%] flex flex-col justify-center items-center">
+                <div class="w-[320px]">
+                    <h2 class="text-3xl font-bold mb-10 text-white tracking-wide font-sans text-center opacity-90">Welcome Back</h2>
+                    <form class="space-y-6">
+                        <div class="relative group">
+                            <input type="text" placeholder=" " class="peer w-full bg-transparent border-b border-gray-500 py-3 text-white text-sm outline-none focus:border-cyan-400 transition-all font-medium tracking-wide">
+                            <label class="absolute left-0 top-3 text-gray-400 text-xs transition-all peer-focus:-top-4 peer-focus:text-cyan-400 peer-[:not(:placeholder-shown)]:-top-4 cursor-text font-bold uppercase tracking-widest">Username</label>
+                            <i class="fa-solid fa-user absolute right-0 top-3 text-gray-400 peer-focus:text-cyan-400 transition-colors text-xs"></i>
+                        </div>
+                        
+                        <div class="relative group">
+                            <input type="password" id="loginPass" placeholder=" " class="peer w-full bg-transparent border-b border-gray-500 py-3 text-white text-sm outline-none focus:border-cyan-400 transition-all font-medium tracking-wide pr-8">
+                            <label class="absolute left-0 top-3 text-gray-400 text-xs transition-all peer-focus:-top-4 peer-focus:text-cyan-400 peer-[:not(:placeholder-shown)]:-top-4 cursor-text font-bold uppercase tracking-widest">Password</label>
+                            <i id="loginIcon" onclick="togglePassword('loginPass', 'loginIcon')" class="fa-solid fa-eye absolute right-0 top-3 text-gray-400 cursor-pointer hover:text-cyan-400 transition-colors text-xs z-10"></i>
+                        </div>
+
+                        <button type="button" class="group w-full mt-8 bg-gradient-to-b from-cyan-900 to-black text-white py-3 rounded-full font-bold text-sm tracking-wider uppercase shadow-[0_4px_10px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.1)] hover:brightness-125 hover:shadow-[0_0_20px_rgba(8,145,178,0.3)] transition-all duration-300">
+                            Sign In
+                        </button>
+                    </form>
+                    <p class="mt-8 text-center text-xs text-gray-400 font-medium">
+                        Don't have an account? 
+                        <button onclick="toggleAuth()" class="text-cyan-600 hover:text-cyan-400 ml-1 font-bold transition-colors hover:underline cursor-pointer">Register</button>
+                    </p>
+                </div>
+            </div>
+
+            <div class="absolute top-0 right-0 h-full w-[40%] flex flex-col items-center justify-center">
+                <h1 class="text-4xl font-black tracking-widest text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)] uppercase font-sans text-center opacity-90">
+                    We missed<br>You!
+                </h1>
+            </div>
+        </div>
+    </div>
+    <script src="login.js"></script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap');
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #000;
+}
+
+/* =========================================
+   THE ABYSSAL GLASS POLYGON
+   ========================================= */
+.diagonal-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 10;
+    
+    /* Dark, Moody Gradient */
+    background: linear-gradient(
+        135deg, 
+        #020617 0%,    
+        #0e7490 30%,   
+        #155e75 60%,   
+        #020617 100%   
+    );
+    background-size: 300% 300%;
+    animation: abyssalPulse 12s ease infinite;
+
+    /* Smoked Glass Surface */
+    box-shadow: 
+        inset 0 1px 0 rgba(255, 255, 255, 0.08), 
+        inset 0 0 50px rgba(8, 145, 178, 0.2);
+    
+    /* Initial State */
+    clip-path: polygon(0 0, 68% 0, 25% 100%, 0% 100%);
+    filter: drop-shadow(4px 0px 0px #0e7490); 
+    
+    transition: filter 0.3s ease;
+}
+
+@keyframes abyssalPulse {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* =========================================
+   ANIMATION KEYFRAMES (The Wipe Effect)
+   ========================================= */
+
+/* 1. REGISTER -> SIGN IN (Left to Right) */
+@keyframes wipeToRight {
+    0% {
+        clip-path: polygon(0 0, 68% 0, 25% 100%, 0% 100%);
+    }
+    40% {
+        /* COVER THE WHOLE CARD */
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+    }
+    60% {
+        /* STAY COVERED */
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+    }
+    100% {
+        /* End State (Right Side) */
+        clip-path: polygon(32% 0, 100% 0, 100% 100%, 75% 100%);
+    }
+}
+
+/* 2. SIGN IN -> REGISTER (Right to Left) */
+@keyframes wipeToLeft {
+    0% {
+        clip-path: polygon(32% 0, 100% 0, 100% 100%, 75% 100%);
+    }
+    40% {
+        /* COVER THE WHOLE CARD */
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+    }
+    60% {
+        /* STAY COVERED */
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+    }
+    100% {
+        /* End State (Left Side) */
+        clip-path: polygon(0 0, 68% 0, 25% 100%, 0% 100%);
+    }
+}
+
+/* =========================================
+   STATE CLASSES & TIMINGS
+   ========================================= */
+
+/* When switching to Sign In */
+.sign-in-mode .diagonal-bg {
+    /* SPEED UP: 0.6s total duration */
+    animation: wipeToRight 0.6s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+    filter: drop-shadow(-4px 0px 0px #0e7490);
+}
+
+/* When switching back to Register */
+.diagonal-bg {
+    /* SPEED UP: 0.6s total duration */
+    animation: wipeToLeft 0.6s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+
+
+/* CONTENT OPACITY TRANSITIONS */
+
+/* Hiding Register Layer (Fast) */
+.sign-in-mode .register-layer {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease; 
+}
+
+/* Showing Register Layer */
+.register-layer {
+    opacity: 1;
+    pointer-events: all;
+    /* DELAY: Wait 0.3s (halfway point) then fade in quickly */
+    transition: opacity 0.3s ease 0.3s; 
+}
+
+/* Showing Sign-In Layer */
+.sign-in-mode .signin-layer {
+    opacity: 1;
+    pointer-events: all;
+    /* DELAY: Wait 0.3s (halfway point) then fade in quickly */
+    transition: opacity 0.3s ease 0.3s; 
+}
+
+/* Hiding Sign-In Layer (Fast) */
+.signin-layer {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+}
+
+/* Autofill Fix */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px black inset !important;
+    -webkit-text-fill-color: white !important;
+    transition: background-color 5000s ease-in-out 0s;
+}

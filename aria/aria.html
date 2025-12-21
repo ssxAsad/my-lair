@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Talk to ARIA | Asad's Lair</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="aria.css">
+</head>
+<body class="text-white min-h-screen">
+
+    <canvas id="particle-canvas" class="fixed top-0 left-0 w-full h-full pointer-events-none z-50"></canvas>
+
+    <nav class="absolute top-0 left-0 w-full z-50 flex justify-between items-center p-6 bg-transparent">
+        <div class="flex items-center gap-3">
+            <i class="fa-solid fa-robot text-3xl text-cyan-500 animate-pulse"></i>
+            <h1 class="text-2xl font-black tracking-widest uppercase">ARIA</h1>
+        </div>
+        
+        <a href="../dashboard.html" class="flex items-center gap-2 px-4 py-2 rounded-full border border-cyan-900/50 bg-cyan-900/10 hover:bg-cyan-900/30 hover:border-cyan-500 transition-all duration-300 group">
+            <i class="fa-solid fa-arrow-left text-xs text-cyan-400 group-hover:-translate-x-1 transition-transform"></i>
+            <span class="text-xs font-bold uppercase tracking-wider text-cyan-400">Back to Lair</span>
+        </a>
+    </nav>
+
+    <div class="face-container">
+        <div class="eye left-eye"></div>
+        <div class="eye right-eye"></div>
+    </div>
+
+    <div class="interaction-area">
+        <i class="fa-solid fa-keyboard text-gray-500"></i>
+        <input type="text" id="ariaInput" class="chat-input" placeholder="Type something to ARIA..." autocomplete="off">
+        <button onclick="sendMessage()" class="send-btn">
+            <i class="fa-solid fa-paper-plane"></i>
+        </button>
+    </div>
+
+    <script src="aria.js"></script>
+</body>
+</html>
