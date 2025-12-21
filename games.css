@@ -1,0 +1,38 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    overflow-x: hidden;
+}
+
+/* --- MOVING GRID BACKGROUND --- */
+.grid-bg {
+    background-image: 
+        linear-gradient(rgba(34, 211, 238, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(34, 211, 238, 0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+    background-position: center top;
+    transform: perspective(500px) rotateX(20deg) scale(1.2);
+    animation: gridMove 20s linear infinite;
+}
+
+@keyframes gridMove {
+    0% { background-position: center 0; }
+    100% { background-position: center 40px; }
+}
+
+/* --- CARD EFFECTS --- */
+.game-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.game-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px -10px rgba(34, 211, 238, 0.2);
+}
+
+/* Neon Text Pulse for Header */
+.font-mono {
+    font-family: 'VT323', monospace;
+}

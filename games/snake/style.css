@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap'); /* Retro Font */
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    /* CRITICAL FOR MOBILE: Stops page scrolling/pull-to-refresh */
+    overscroll-behavior: none;
+    touch-action: none; 
+}
+
+#gameCanvas {
+    /* Neon Glow */
+    box-shadow: 
+        0 0 20px rgba(34, 211, 238, 0.1), 
+        inset 0 0 100px rgba(0, 0, 0, 0.9);
+    
+    /* Grid Background Pattern */
+    background-image: 
+        linear-gradient(rgba(34, 211, 238, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(34, 211, 238, 0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
+    
+    /* Responsive sizing */
+    max-width: 95vw; 
+    max-height: 95vw;
+}
+
+.font-mono {
+    font-family: 'VT323', monospace;
+    font-size: 1.4rem;
+}
+
+button:active {
+    transform: scale(0.95);
+}
