@@ -13,34 +13,55 @@ function togglePassword(inputId, iconId) {
     }
 }
 
-// --- 2. YOUR ORIGINAL ANIMATION LOGIC (Restored) ---
+// --- 2. ANIMATION LOGIC ---
 function toggleAuth() {
-    // This targets the specific Main Card ID to trigger the CSS slide effect
     const mainCard = document.getElementById('mainCard');
     mainCard.classList.toggle('sign-in-mode');
 }
 
-// --- 3. SERVER CONNECTION ---
-async function postData(endpoint, data) {
-    try {
-        const response = await fetch(endpoint, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        });
-        return await response.json();
-    } catch (error) {
-        console.error('Error:', error);
-        return { success: false, message: "Server connection failed." };
+// --- 3. TEMPORARY SESSION STORAGE (The Fix) ---
+// usage: sessionStorage data is DELETED when the tab closes.
+
+function getTempUsers() {
+    // We use sessionStorage now, not localStorage
+    return JSON.parse(sessionStorage.getItem('temp_users_list') || '[]');
+}
+
+function mockRegister(username, email, password) {
+    const users = getTempUsers();
+    
+    // Check duplication
+    if (users.find(u => u.username === username)) {
+        return { success: false, message: "Username taken (in this session)." };
+    }
+
+    // Save to TEMPORARY list
+    users.push({ username, email, password });
+    sessionStorage.setItem('temp_users_list', JSON.stringify(users));
+    
+    return { success: true, message: "Registered temporarily! You can now Sign In." };
+}
+
+function mockLogin(username, password) {
+    const users = getTempUsers();
+    
+    // Search the temporary list
+    const user = users.find(u => u.username === username && u.password === password);
+    
+    if (user) {
+        return { success: true, username: user.username };
+    } else {
+        return { success: false, message: "User not found. (Did you close the tab? Data resets on close)." };
     }
 }
 
+// --- 4. EVENT LISTENERS ---
 document.addEventListener('DOMContentLoaded', () => {
 
     // REGISTER
     const registerBtn = document.querySelector('.register-layer button');
     if(registerBtn) {
-        registerBtn.addEventListener('click', async () => {
+        registerBtn.addEventListener('click', () => {
             const inputs = document.querySelectorAll('.register-layer input');
             const username = inputs[0].value.trim();
             const email = inputs[1].value.trim();
@@ -51,12 +72,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            const result = await postData('/api/register', { username, email, password });
+            const result = mockRegister(username, email, password);
             
             alert(result.message);
             if (result.success) {
-                toggleAuth(); // Triggers the slide animation
-                inputs.forEach(input => input.value = '');
+                toggleAuth(); 
+                inputs.forEach(input => input.value = ''); 
             }
         });
     }
@@ -64,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // LOGIN
     const loginBtn = document.querySelector('.signin-layer button');
     if(loginBtn) {
-        loginBtn.addEventListener('click', async () => {
+        loginBtn.addEventListener('click', () => {
             const inputs = document.querySelectorAll('.signin-layer input');
             const username = inputs[0].value.trim();
             const password = inputs[1].value;
@@ -74,13 +95,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            const result = await postData('/api/login', { username, password });
+            const result = mockLogin(username, password);
 
             if (result.success) {
-                localStorage.setItem('token', result.token);
-                localStorage.setItem('username', result.username);
-                
-                // --- UPDATED REDIRECT ---
+                // Save active session to sessionStorage too
+                sessionStorage.setItem('active_session_user', result.username);
                 window.location.href = 'loggedin.html'; 
             } else {
                 alert(result.message);
