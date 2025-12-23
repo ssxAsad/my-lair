@@ -146,3 +146,33 @@ input:-webkit-autofill:active {
     -webkit-text-fill-color: white !important;
     transition: background-color 5000s ease-in-out 0s;
 }
+
+/* =========================================
+   MOBILE OPTIMIZATION (Fixing the Bulldoze)
+   ========================================= */
+@media (max-width: 768px) {
+    /* Kill the polygon wipe on mobile. 
+       Just make it a subtle full-size background. */
+    .diagonal-bg {
+        clip-path: none !important;
+        animation: none !important; /* Stop the Wipe animation */
+        opacity: 0.15 !important;
+        width: 100% !important;
+        height: 100% !important;
+    }
+    
+    .sign-in-mode .diagonal-bg {
+        animation: none !important;
+    }
+
+    /* On mobile, we don't wait for animations. 
+       We just fade in/out instantly or quickly. */
+    .register-layer, .signin-layer {
+        transition: opacity 0.3s ease !important;
+    }
+
+    .sign-in-mode .register-layer, 
+    .signin-layer {
+        transition-delay: 0s !important;
+    }
+}
