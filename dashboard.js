@@ -6,6 +6,7 @@ function enterRealm(realmName) {
 document.addEventListener('DOMContentLoaded', () => {
     const audio = document.getElementById('audio-player');
     const canvas = document.getElementById('visualizer-canvas');
+    const overlay = document.getElementById('entrance-overlay');
     const ctx = canvas.getContext('2d');
 
     // --- VISUALIZER SETTINGS ---
@@ -33,23 +34,9 @@ document.addEventListener('DOMContentLoaded', () => {
     function animate() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        // STATE 1: WAITING FOR INTERACTION (Mysterious Mode)
+        // STATE 1: WAITING FOR INTERACTION
+        // If audio isn't initialized, we just wait. The overlay handles the UI.
         if (!isAudioInitialized || audio.paused) {
-            ctx.save();
-            ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
-            
-            // Mysterious Glowing Text
-            ctx.font = "900 28px Montserrat, sans-serif"; // Thicker, bolder font
-            ctx.shadowColor = "rgba(34, 211, 238, 0.9)";   // Strong Cyan/Ethereal glow
-            ctx.shadowBlur = 20;                           // High blur for "energy" look
-            
-            // Spaced out letters for cinematic effect
-            ctx.fillText("T A P   H E R E !", canvas.width / 2, canvas.height / 2);
-            
-            ctx.restore();
-            
             requestAnimationFrame(animate);
             return;
         }
@@ -77,7 +64,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // --- COLOR LOGIC: 4 DISTINCT SECTIONS ---
             // Divide the total number of bars by 4 to find which "quarter" we are in
-            // 0 = Cyan, 1 = Purple, 2 = Emerald, 3 = Amber
             const colorSection = Math.floor((i / maxBars) * 4);
             const color = realmColors[Math.min(colorSection, 3)]; // Clamp to 3 just to be safe
 
@@ -93,8 +79,17 @@ document.addEventListener('DOMContentLoaded', () => {
         requestAnimationFrame(animate);
     }
 
-    // --- AUDIO INIT ---
+    // --- AUDIO INIT & OVERLAY REMOVAL ---
     function initAudio() {
+        // 1. Fade out overlay
+        if (overlay) {
+            overlay.classList.add('fade-out');
+            setTimeout(() => {
+                overlay.remove();
+            }, 1000); // Matches CSS transition duration
+        }
+
+        // 2. Init Audio Context
         if (isAudioInitialized && !audio.paused) return; 
 
         if (!audioContext) {
@@ -125,6 +120,10 @@ document.addEventListener('DOMContentLoaded', () => {
             });
     }
 
-    canvas.addEventListener('click', initAudio);
+    // Listener attached to the Overlay now, not the canvas
+    if (overlay) {
+        overlay.addEventListener('click', initAudio);
+    }
+    
     animate();
 });

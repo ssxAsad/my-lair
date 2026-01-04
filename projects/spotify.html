@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify Downloader | Asad's Lair</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="spotify.css">
+</head>
+<body class="bg-black text-white min-h-screen flex flex-col font-sans selection:bg-green-500 selection:text-black">
+
+    <a href="../projects.html" class="absolute top-6 left-6 z-50 flex items-center gap-2 px-4 py-2 rounded-full border border-green-900/50 bg-black/50 backdrop-blur-md hover:bg-green-900/30 hover:border-green-500 transition-all duration-300 group">
+        <i class="fa-solid fa-arrow-left text-xs text-green-400 group-hover:-translate-x-1 transition-transform"></i>
+        <span class="text-xs font-bold uppercase tracking-wider text-green-400">Back to Archive</span>
+    </a>
+
+    <div class="fixed inset-0 pointer-events-none">
+        <div class="absolute top-[-20%] left-1/2 transform -translate-x-1/2 w-[800px] h-[600px] bg-green-600/10 blur-[120px] rounded-full"></div>
+    </div>
+
+    <main class="relative z-10 flex-grow flex flex-col items-center justify-center p-4">
+        
+        <div class="text-center mb-12 animate-fade-in-down">
+            <div class="inline-flex items-center justify-center w-20 h-20 mb-6 rounded-full bg-green-900/20 border border-green-500/30 shadow-[0_0_40px_rgba(29,185,84,0.3)]">
+                <i class="fa-brands fa-spotify text-5xl text-green-500"></i>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-black tracking-tighter mb-2">
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-green-600">SPOTIFY</span> 
+                DOWNLOADER
+            </h1>
+            <p class="text-gray-400 text-sm tracking-widest uppercase">High Quality Audio Extraction</p>
+        </div>
+
+        <div class="w-full max-w-xl flex flex-col md:flex-row items-center gap-4">
+            
+            <div class="w-full flex-grow bg-gray-900/40 border border-gray-800 rounded-2xl px-4 py-1 backdrop-blur-xl shadow-lg relative group focus-within:border-green-500/50 focus-within:shadow-[0_0_30px_rgba(29,185,84,0.2)] transition-all duration-300">
+                <div class="flex items-center">
+                    <div class="pr-3 text-gray-500">
+                        <i class="fa-solid fa-link"></i>
+                    </div>
+                    <input type="text" id="spotifyUrl" placeholder="Paste Spotify Track or Playlist Link..." 
+                        class="w-full bg-transparent border-none outline-none text-white py-4 text-sm font-medium placeholder-gray-600">
+                </div>
+            </div>
+
+            <button onclick="processLink()" class="w-auto bg-green-600 hover:bg-green-500 text-black font-bold py-4 px-8 rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-[0_0_20px_rgba(29,185,84,0.4)] whitespace-nowrap">
+                CONVERT
+            </button>
+
+        </div>
+
+        <div id="resultArea" class="w-full max-w-xl mt-8 hidden">
+            </div>
+
+    </main>
+
+    <footer class="relative z-10 text-center py-6 text-gray-600 text-xs uppercase tracking-widest">
+        System Status: <span class="text-green-500">Online</span>
+    </footer>
+
+    <script src="spotify.js"></script>
+</body>
+</html>

@@ -72,6 +72,25 @@
                 </div>
             </div>
 
+            <div onclick="openProject('projects/spotify.html')" class="group relative h-96 bg-gray-900/20 rounded-xl overflow-hidden cursor-pointer transition-all duration-300">
+                <div class="absolute inset-0 z-0 border-mask rounded-xl pointer-events-none">
+                    <div class="absolute -inset-[100%] animate-spin-cw bg-[conic-gradient(transparent_80%,_#1DB954_100%)]"></div>
+                    <div class="absolute -inset-[100%] animate-spin-ccw bg-[conic-gradient(transparent_80%,_#1DB954_100%)]"></div>
+                </div>
+                
+                <div class="absolute inset-0 border border-green-900/40 rounded-xl z-10 group-hover:border-green-500/50 transition-colors"></div>
+                <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-90 z-10"></div>
+                
+                <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 group-hover:scale-110 transition-transform duration-500">
+                    <i class="fa-brands fa-spotify text-9xl icon-neon icon-neon-green relative z-10"></i>
+                </div>
+
+                <div class="absolute bottom-0 left-0 w-full p-6 border-t border-green-900/30 bg-black/50 backdrop-blur-sm group-hover:bg-green-900/20 transition-colors z-20">
+                    <h3 class="text-xl font-bold text-white mb-1 group-hover:text-green-400">Spotify Downloader</h3>
+                    <p class="text-xs text-gray-400 uppercase tracking-wider">Python & Spotify API</p>
+                </div>
+            </div>
+
         </div>
     </main>
 

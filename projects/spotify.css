@@ -1,0 +1,54 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap');
+
+body {
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* --- ANIMATIONS --- */
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes pulse-green {
+    0%, 100% { box-shadow: 0 0 20px rgba(29, 185, 84, 0.2); }
+    50% { box-shadow: 0 0 40px rgba(29, 185, 84, 0.5); }
+}
+
+.animate-fade-in-down {
+    animation: fadeInDown 0.8s ease-out forwards;
+}
+
+.animate-spin-slow {
+    animation: spin-slow 8s linear infinite;
+}
+
+/* --- PROGRESS BAR --- */
+.progress-container {
+    width: 100%;
+    background-color: #1f2937; /* gray-800 */
+    border-radius: 9999px;
+    height: 6px;
+    overflow: hidden;
+    margin-top: 15px;
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #1DB954, #1ed760);
+    width: 0%;
+    transition: width 0.1s linear;
+    box-shadow: 0 0 10px #1DB954;
+}
+
+/* --- UTILITIES --- */
+.glass-panel {
+    background: rgba(20, 20, 20, 0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}

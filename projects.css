@@ -43,7 +43,27 @@ body {
     filter: none;   
 }
 
-/* Placeholders for future projects */
+/* PINK (For Calculator) - inline style fallback in HTML, but good to have class */
+.icon-neon-pink {
+    -webkit-text-stroke: 2px #ec4899;
+    filter: drop-shadow(0 0 5px #ec4899);
+}
+.group:hover .icon-neon-pink {
+    color: #ec4899;
+    filter: none;
+}
+
+/* GREEN (For Spotify Project) */
+.icon-neon-green {
+    -webkit-text-stroke: 2px #1DB954;
+    filter: drop-shadow(0 0 5px #1DB954); 
+}
+.group:hover .icon-neon-green {
+    color: #1DB954; 
+    filter: none;   
+}
+
+/* PLACEHOLDERS */
 .icon-neon-gray {
     -webkit-text-stroke: 2px #4b5563;
     filter: drop-shadow(0 0 2px #4b5563);
