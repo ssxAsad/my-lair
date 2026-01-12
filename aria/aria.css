@@ -10,13 +10,13 @@ body {
 /* --- THE FACE CONTAINER --- */
 .face-container {
     position: absolute;
-    top: 50%;
+    top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
     display: flex;
     gap: 60px;
     pointer-events: none;
-    z-index: 10; /* Behind particles */
+    z-index: 10;
 }
 
 /* --- THE EYES --- */
@@ -40,6 +40,63 @@ body {
     100% { transform: scaleY(1); }
 }
 
+/* --- NEW: PROFESSIONAL BUBBLE RESPONSE --- */
+.aria-text {
+    position: absolute;
+    top: 60%; /* Positioned below eyes */
+    left: 50%;
+    transform: translateX(-50%);
+    
+    /* Bubble Dimensions */
+    width: auto;
+    min-width: 300px;
+    max-width: 600px;
+    padding: 20px 30px;
+    
+    /* Bubble Aesthetics (Glassmorphism) */
+    background: rgba(12, 20, 25, 0.9); /* Dark semi-transparent */
+    border: 1px solid rgba(34, 211, 238, 0.6); /* Cyan Border */
+    border-radius: 15px;
+    box-shadow: 
+        0 0 20px rgba(34, 211, 238, 0.15), 
+        inset 0 0 10px rgba(34, 211, 238, 0.05);
+    backdrop-filter: blur(8px);
+    
+    /* Typography */
+    text-align: center;
+    color: #cffafe; /* Light Cyan text */
+    text-shadow: 0 0 5px rgba(34, 211, 238, 0.5);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    
+    /* Visibility & Animation */
+    z-index: 30;
+    opacity: 0; /* Hidden by default */
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    pointer-events: none; /* Allows clicking through when hidden */
+}
+
+/* The "Tail" pointing up to the eyes */
+.aria-text::before {
+    content: '';
+    position: absolute;
+    top: -10px; /* Sits on top */
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid rgba(34, 211, 238, 0.6); /* Color matches border */
+}
+
+/* Class to show the bubble */
+.aria-text.active {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(-50%) translateY(0);
+}
+
 /* --- CHAT INTERFACE --- */
 .interaction-area {
     position: absolute;
@@ -58,7 +115,7 @@ body {
     gap: 15px;
     box-shadow: 0 0 30px rgba(34, 211, 238, 0.1);
     transition: all 0.3s ease;
-    z-index: 40; /* Just below canvas */
+    z-index: 40; 
 }
 
 .interaction-area:focus-within {
@@ -90,7 +147,7 @@ body {
     text-shadow: 0 0 10px #22d3ee;
 }
 
-/* --- TYPING ANIMATIONS (From Sample) --- */
+/* --- TYPING ANIMATIONS --- */
 @keyframes vibrate {
     0% { transform: translateX(-50%) translate(0); }
     25% { transform: translateX(-50%) translate(-1.5px, 1.5px); }
