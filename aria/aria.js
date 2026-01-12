@@ -2,7 +2,7 @@
 // CONFIGURATION: API KEY
 // ============================================
 // WARNING: Replace this string with your actual API Key
-const GEMINI_API_KEY = "AIzaSyA_uvAkYwC9dj9GPGZW4TF8xLyQNqVR5p4"; 
+const GEMINI_API_KEY = process.env.GEMINIAPI; 
 
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
@@ -237,4 +237,5 @@ async function sendMessage() {
 
 inputField.addEventListener('keypress', function (e) {
     if (e.key === 'Enter') sendMessage();
+
 });
