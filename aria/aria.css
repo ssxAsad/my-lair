@@ -10,11 +10,13 @@ body {
 /* --- THE FACE CONTAINER --- */
 .face-container {
     position: absolute;
-    top: 40%;
+    /* 1. LOWERED POSITION */
+    top: 60%; 
     left: 50%;
     transform: translate(-50%, -50%);
     display: flex;
-    gap: 60px;
+    /* 2. INCREASED SPACE BETWEEN EYES */
+    gap: 100px; 
     pointer-events: none;
     z-index: 10;
 }
@@ -22,14 +24,23 @@ body {
 /* --- THE EYES --- */
 .eye {
     width: 140px;
-    height: 180px;
+    height: 180px; 
     background-color: #22d3ee;
-    border-radius: 60px;
+    border-radius: 60px; 
     box-shadow: 
         0 0 20px #22d3ee, 
         0 0 40px rgba(34, 211, 238, 0.6),
         0 0 80px rgba(34, 211, 238, 0.3);
-    transition: height 0.1s, transform 0.1s cubic-bezier(0.2, 0.8, 0.2, 1);
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); 
+}
+
+/* --- EMO STYLE HAPPY EXPRESSION --- */
+.eye.happy {
+    height: 100px; 
+    border-radius: 50% 50% 10% 10%; 
+    box-shadow: 
+        0 0 40px #22d3ee, 
+        0 0 80px rgba(34, 211, 238, 0.8); 
 }
 
 .blink { animation: blinkAnim 0.3s ease-in-out forwards; }
@@ -40,67 +51,80 @@ body {
     100% { transform: scaleY(1); }
 }
 
-/* --- NEW: PROFESSIONAL BUBBLE RESPONSE --- */
+/* --- SCROLLABLE BUBBLE RESPONSE (MOVED TO TOP) --- */
 .aria-text {
     position: absolute;
-    top: 60%; /* Positioned below eyes */
+    /* 3. MOVED BUBBLE TO TOP */
+    top: 20%; 
     left: 50%;
     transform: translateX(-50%);
     
-    /* Bubble Dimensions */
-    width: auto;
+    width: 90%;
     min-width: 300px;
     max-width: 600px;
+    
+    /* Keep Scroll Logic */
+    max-height: 30vh; 
+    overflow-y: auto; 
     padding: 20px 30px;
     
-    /* Bubble Aesthetics (Glassmorphism) */
-    background: rgba(12, 20, 25, 0.9); /* Dark semi-transparent */
-    border: 1px solid rgba(34, 211, 238, 0.6); /* Cyan Border */
+    background: rgba(12, 20, 25, 0.95);
+    border: 1px solid rgba(34, 211, 238, 0.6);
     border-radius: 15px;
     box-shadow: 
         0 0 20px rgba(34, 211, 238, 0.15), 
         inset 0 0 10px rgba(34, 211, 238, 0.05);
     backdrop-filter: blur(8px);
     
-    /* Typography */
     text-align: center;
-    color: #cffafe; /* Light Cyan text */
+    color: #cffafe;
     text-shadow: 0 0 5px rgba(34, 211, 238, 0.5);
     font-family: 'Montserrat', sans-serif;
     font-weight: 500;
     font-size: 1.1rem;
     line-height: 1.6;
     
-    /* Visibility & Animation */
+    white-space: pre-wrap;     
+    overflow-wrap: break-word; 
+    word-break: break-word;    
+    
     z-index: 30;
-    opacity: 0; /* Hidden by default */
-    transition: opacity 0.4s ease, transform 0.4s ease;
-    pointer-events: none; /* Allows clicking through when hidden */
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
 }
 
-/* The "Tail" pointing up to the eyes */
+.aria-text::-webkit-scrollbar { width: 8px; }
+.aria-text::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); border-radius: 10px; }
+.aria-text::-webkit-scrollbar-thumb { background: rgba(34, 211, 238, 0.5); border-radius: 10px; }
+.aria-text::-webkit-scrollbar-thumb:hover { background: rgba(34, 211, 238, 0.8); }
+
+/* 4. FLIP TAIL TO POINT DOWN */
 .aria-text::before {
     content: '';
     position: absolute;
-    top: -10px; /* Sits on top */
+    /* Reset Top */
+    top: auto; 
+    /* Move to Bottom */
+    bottom: -10px; 
     left: 50%;
     transform: translateX(-50%);
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
-    border-bottom: 10px solid rgba(34, 211, 238, 0.6); /* Color matches border */
+    /* Point Down */
+    border-top: 10px solid rgba(34, 211, 238, 0.6);
+    border-bottom: none; 
 }
 
-/* Class to show the bubble */
 .aria-text.active {
     opacity: 1;
     pointer-events: auto;
-    transform: translateX(-50%) translateY(0);
 }
 
 /* --- CHAT INTERFACE --- */
 .interaction-area {
     position: absolute;
-    bottom: 40px;
+    bottom: 30px; 
     left: 50%;
     transform: translateX(-50%);
     width: 90%;
@@ -147,7 +171,6 @@ body {
     text-shadow: 0 0 10px #22d3ee;
 }
 
-/* --- TYPING ANIMATIONS --- */
 @keyframes vibrate {
     0% { transform: translateX(-50%) translate(0); }
     25% { transform: translateX(-50%) translate(-1.5px, 1.5px); }

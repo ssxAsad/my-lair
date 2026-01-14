@@ -1,10 +1,8 @@
 // ============================================
-// CONFIGURATION
+// CONFIGURATION & STATE
 // ============================================
-// We now point to the folder we created in Step 2.
-// Netlify automatically turns this file path into a working URL.
-const API_URL = "/.netlify/functions/chat"; 
-
+let API_KEY = null; // Key will be fetched from server
+const BASE_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:streamGenerateContent";
 
 // ============================================
 // PERSONALITY & SETUP
@@ -28,7 +26,6 @@ const responseText = document.getElementById("aria-response");
 // ============================================
 // VISUALS (PARTICLES & EYES)
 // ============================================
-// (Keeping your visual code exactly as it was)
 const canvas = document.getElementById("particle-canvas");
 const ctx = canvas.getContext("2d");
 let particles = [];
@@ -66,66 +63,148 @@ function animateParticles() {
 }
 animateParticles();
 
+// --- FIXED TYPING EFFECT ---
 inputField.addEventListener("input", (e) => {
     inputBar.classList.add("vibrating");
     setTimeout(() => inputBar.classList.remove("vibrating"), 100);
-    // (Simple explosion trigger for brevity - logic remains same as before)
+
     const rect = inputField.getBoundingClientRect();
-    createExplosion(rect.left + rect.width/2, rect.top); 
+    const style = window.getComputedStyle(inputField);
+    const paddingLeft = parseFloat(style.paddingLeft);
+    
+    const t = document.createElement("span");
+    t.style.font = style.font;
+    t.style.visibility = "hidden";
+    t.style.position = "absolute";
+    t.style.whiteSpace = "pre"; 
+    t.textContent = inputField.value.substring(0, inputField.selectionStart);
+    
+    document.body.appendChild(t);
+    const textWidth = t.getBoundingClientRect().width;
+    document.body.removeChild(t);
+
+    let explosionX = rect.left + paddingLeft + textWidth;
+    explosionX = Math.min(explosionX, rect.right - 20); 
+    const explosionY = rect.top + (rect.height / 2);
+
+    createExplosion(explosionX, explosionY);
 });
 
+// --- EYE TRACKING ---
 document.addEventListener('mousemove', (e) => {
-    const moveX = (e.clientX - window.innerWidth / 2) / 15; 
-    const moveY = (e.clientY - window.innerHeight / 2) / 15;
-    leftEye.style.transform = `translate(${moveX}px, ${moveY}px)`;
-    rightEye.style.transform = `translate(${moveX}px, ${moveY}px)`;
+    // Only track if NOT currently smiling
+    if (!leftEye.classList.contains('happy')) {
+        const moveX = (e.clientX - window.innerWidth / 2) / 15; 
+        const moveY = (e.clientY - window.innerHeight / 2) / 15;
+        leftEye.style.transform = `translate(${moveX}px, ${moveY}px)`;
+        rightEye.style.transform = `translate(${moveX}px, ${moveY}px)`;
+    }
 });
 
 function triggerBlink() {
-    leftEye.classList.add('blink'); rightEye.classList.add('blink');
-    setTimeout(() => { leftEye.classList.remove('blink'); rightEye.classList.remove('blink'); }, 300);
+    // Don't blink if smiling to avoid glitches
+    if (!leftEye.classList.contains('happy')) {
+        leftEye.classList.add('blink'); rightEye.classList.add('blink');
+        setTimeout(() => { leftEye.classList.remove('blink'); rightEye.classList.remove('blink'); }, 300);
+    }
     setTimeout(triggerBlink, Math.random() * 4000 + 2000);
 }
 triggerBlink();
 
+// --- HAPPY EXPRESSION FUNCTION ---
+function triggerHappyEyes() {
+    leftEye.classList.add('happy');
+    rightEye.classList.add('happy');
+    
+    // Remove the happy expression after 2.5 seconds
+    setTimeout(() => {
+        leftEye.classList.remove('happy');
+        rightEye.classList.remove('happy');
+    }, 2500);
+}
+
 // ============================================
-// SEND MESSAGE (THE NEW LOGIC)
+// SEND MESSAGE (SECURE & STREAMING)
 // ============================================
 async function sendMessage() {
     const message = inputField.value.trim();
     if(message) {
         inputField.value = ''; 
         
-        // Show "Thinking..."
         if(responseText) {
             responseText.classList.add("active");
             responseText.innerText = "ARIA is thinking...";
         }
 
         try {
+            // 1. FETCH API KEY SECURELY IF NOT LOADED
+            if (!API_KEY) {
+                // This calls the route we made in script.js
+                const keyResponse = await fetch('/api/key');
+                const keyData = await keyResponse.json();
+                API_KEY = keyData.key;
+                
+                if (!API_KEY) throw new Error("API Key missing on server.");
+            }
+
+            // 2. CONSTRUCT URL DYNAMICALLY
+            const finalUrl = `${BASE_URL}?key=${API_KEY}&alt=sse`;
             const finalPrompt = PERSONALITY_PROMPT + "\nUser Input: " + message;
 
-            // SEND TO NETLIFY FUNCTION
-            const response = await fetch(API_URL, {
+            // 3. CALL GEMINI
+            const response = await fetch(finalUrl, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ message: finalPrompt })
+                body: JSON.stringify({ 
+                    contents: [{ 
+                        parts: [{ text: finalPrompt }] 
+                    }] 
+                })
             });
 
-            if (!response.ok) throw new Error("Server Error");
+            if (!response.ok) throw new Error("Gemini Server Error");
 
-            const data = await response.json();
+            // 4. HANDLE STREAM
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder();
+            let isFirstChunk = true; 
             
-            if (data.candidates && data.candidates.length > 0) {
-                const botReply = data.candidates[0].content.parts[0].text;
-                if(responseText) responseText.innerText = botReply;
-            } else {
-                if(responseText) responseText.innerText = "...";
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
+
+                const chunk = decoder.decode(value, { stream: true });
+                const lines = chunk.split('\n');
+                
+                for (const line of lines) {
+                    if (line.startsWith('data: ')) {
+                        try {
+                            const jsonStr = line.replace('data: ', '').trim();
+                            if (jsonStr === '[DONE]') continue; 
+
+                            const data = JSON.parse(jsonStr);
+                            if (data.candidates && data.candidates[0].content) {
+                                const newText = data.candidates[0].content.parts[0].text;
+                                
+                                // ON FIRST CHUNK: Clear "Thinking..." and Trigger Smile
+                                if (isFirstChunk) {
+                                    responseText.innerText = "";
+                                    isFirstChunk = false;
+                                    triggerHappyEyes(); 
+                                }
+
+                                if(responseText) responseText.innerText += newText;
+                            }
+                        } catch (e) {
+                            // Ignore incomplete JSON chunks
+                        }
+                    }
+                }
             }
 
         } catch (error) {
             console.error("Error:", error);
-            if(responseText) responseText.innerText = "Connection Error.";
+            if(responseText) responseText.innerText = "Connection Error: " + error.message;
         }
     }
 }

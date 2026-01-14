@@ -1,6 +1,5 @@
 // --- CONFIGURATION ---
-// make sure this key is active on RapidAPI
-const RAPIDAPI_KEY = '502cd221d2mshbffa82a8f7e65a4p1431a7jsn230848868541'; 
+let RAPIDAPI_KEY = null; // Key will be fetched from server
 const RAPIDAPI_HOST = 'spotify-downloader9.p.rapidapi.com';
 
 async function processLink() {
@@ -8,8 +7,8 @@ async function processLink() {
     const resultArea = document.getElementById('resultArea');
     const url = input.value.trim();
 
-    // --- FIX 1: Correct Spotify URL Validation ---
-    if (!url || !url.includes('open.spotify.com')) {
+    // Fixed Validation: Allows standard spotify.com links
+    if (!url || !url.includes('spotify.com')) {
         alert("Please enter a valid Spotify URL (e.g., https://open.spotify.com/track/...)");
         return;
     }
@@ -24,6 +23,16 @@ async function processLink() {
     `;
 
     try {
+        // 1. FETCH API KEY SECURELY IF NOT LOADED
+        if (!RAPIDAPI_KEY) {
+            const keyResponse = await fetch('/api/spotify-key');
+            const keyData = await keyResponse.json();
+            RAPIDAPI_KEY = keyData.key;
+            
+            if (!RAPIDAPI_KEY) throw new Error("API Key missing on server.");
+        }
+
+        // 2. PREPARE REQUEST
         const options = {
             method: 'GET',
             headers: {
@@ -32,26 +41,21 @@ async function processLink() {
             }
         };
 
-        // Note: We are passing the full URL as 'songId'. 
         const apiUrl = `https://${RAPIDAPI_HOST}/downloadSong?songId=${encodeURIComponent(url)}`;
         
-        console.log("Fetching:", apiUrl); // Debugging line
-
+        // 3. CALL RAPIDAPI
         const response = await fetch(apiUrl, options);
         
-        // Check for 429 (Too Many Requests) or 401 (Unauthorized/Bad Key)
-        if (response.status === 429) throw new Error("API Rate Limit Exceeded. Upgrade plan or wait.");
+        if (response.status === 429) throw new Error("API Rate Limit Exceeded.");
         if (response.status === 401) throw new Error("Invalid API Key.");
 
         const data = await response.json();
-        console.log("API Response:", data); // Debugging line
 
-        // Error Handling based on API structure
         if (!response.ok || !data.success || !data.data || !data.data.downloadLink) {
             throw new Error(data.message || "Could not retrieve download link.");
         }
 
-        // Success: Show Card
+        // 4. SHOW SUCCESS CARD
         const songData = {
             title: data.data.title || "Spotify Track",
             artist: data.data.artist || "Unknown Artist",
@@ -101,19 +105,16 @@ async function downloadAndVerify(url, filename) {
     const status = document.getElementById('statusText');
     const originalIcon = btn.innerHTML;
     
-    // UI Loading State
     btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
     status.innerText = "Fetching Audio File...";
     status.className = "text-yellow-400 animate-pulse";
 
     try {
-        // Direct Download Fallback (If CORS blocks the fetch)
-        // We try to fetch first to rename the file cleanly.
         const response = await fetch(url);
         
         const contentType = response.headers.get("content-type");
         if (contentType && contentType.includes("application/json")) {
-            throw new Error("API returned JSON instead of Audio (Check Limits)");
+            throw new Error("API returned JSON instead of Audio");
         }
         
         if (!response.ok) throw new Error("Network download failed");
@@ -128,7 +129,6 @@ async function downloadAndVerify(url, filename) {
         document.body.removeChild(a);
         window.URL.revokeObjectURL(blobUrl);
 
-        // Success UI
         btn.innerHTML = '<i class="fa-solid fa-check"></i>';
         status.innerText = "Download Complete!";
         status.className = "text-green-500 font-bold";
@@ -137,7 +137,6 @@ async function downloadAndVerify(url, filename) {
 
     } catch (e) {
         console.warn("Fetch failed, trying direct window open...", e);
-        // Fallback: Just open the link if the fancy download fails
         window.open(url, '_blank');
         
         status.innerText = "Opened in New Tab";
